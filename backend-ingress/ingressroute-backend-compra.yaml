@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: compra-ingress-route
+spec:
+  entryPoints:
+    - web
+    - websecure   
+  routes:
+  - kind: Rule
+    match: Host(`compra.sendit.com`)
+    services:
+    # The service name and port must match the Service
+    # specified in the deploy file
+    - name: compra-service
+      port: 4700

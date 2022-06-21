@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: generales-deployment
+  labels:
+    entorno: produccion
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: generales-backend
+  template:
+    metadata:
+      labels:
+        app: generales-backend
+    spec:
+      containers:
+      - name: generales-backend
+        image: devsendit/sendit-prod:api_backend_generales
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4500
+      imagePullSecrets:
+      - name: hub-sendit

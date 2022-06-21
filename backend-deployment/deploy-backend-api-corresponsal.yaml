@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: corresponsal-deployment
+  labels:
+    entorno: produccion
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: corresponsal-backend
+  template:
+    metadata:
+      labels:
+        app: corresponsal-backend
+    spec:
+      containers:
+      - name: corresponsal-backend
+        image: devsendit/sendit-prod:api_backend_corresponsal
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4600
+      imagePullSecrets:
+      - name: hub-sendit

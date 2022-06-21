@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: compra-deployment
+  labels:
+    entorno: produccion
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: compra-backend
+  template:
+    metadata:
+      labels:
+        app: compra-backend
+    spec:
+      containers:
+      - name: compra-backend
+        image: devsendit/sendit-prod:api_backend_compra
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4700
+      imagePullSecrets:
+      - name: hub-sendit

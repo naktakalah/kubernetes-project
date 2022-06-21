@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-portal
+spec:
+  rules:
+    - host: portal.sendit.com
+      http:
+        paths:
+          - path: /bar
+            pathType: Exact
+            backend:
+              service:
+                name:  service1
+                port:
+                  number: 80

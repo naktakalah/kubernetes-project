@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: external-ingress-route
+spec:
+  entryPoints:
+    - web
+    - websecure   
+  routes:
+  - kind: Rule
+    match: Host(`external.sendit.com`)
+    services:
+    # The service name and port must match the Service
+    # specified in the deploy file
+    - name: external-service
+      port: 4200 

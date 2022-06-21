@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: portal-ingress-route
+spec:
+  entryPoints:
+    - web
+    - websecure   
+  routes:
+  - kind: Rule
+    match: Host(`portal.sendit.com`)
+    services:
+    # The service name and port must match the Service
+    # specified in the deploy file
+    - name: portal-service
+      port: 4100 

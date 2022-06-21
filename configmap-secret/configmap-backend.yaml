@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  entorno: produccion
+  name: configmap-backend
+data:
+  APP_KEY: tZlp3iEaKU9hJOLobvGTkSzny7Ih4x9T
+  APP_NAME: AdonisJs
+  APP_URL: http://${HOST}:${PORT}
+  CACHE_VIEWS: "false"
+  DB_CONNECTION: pg
+  DB_DATABASE: sendit
+  DB_DEBUG: "true"
+  DB_HOST: 10.10.0.230
+  DB_PASSWORD: root
+  DB_PORT: "5432"
+  DB_USER: root
+  HASH_DRIVER: bcrypt
+  HOST: 0.0.0.0
+  NODE_ENV: development
+  PORT: "4000"

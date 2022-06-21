@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: email-deployment
+  labels:
+    entorno: produccion
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: email-backend
+  template:
+    metadata:
+      labels:
+        app: email-backend
+    spec:
+      containers:
+      - name: email-backend
+        image: devsendit/sendit-prod:api_backend_email
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4400
+      imagePullSecrets:
+      - name: hub-sendit

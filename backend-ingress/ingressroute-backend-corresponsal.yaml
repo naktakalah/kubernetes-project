@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: corresponsal-ingress-route
+spec:
+  entryPoints:
+    - web
+    - websecure   
+  routes:
+  - kind: Rule
+    match: Host(`corresponsal.sendit.com`)
+    services:
+    # The service name and port must match the Service
+    # specified in the deploy file
+    - name: corresponsal-service
+      port: 4600

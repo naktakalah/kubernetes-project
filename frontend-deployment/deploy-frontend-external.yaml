@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-deployment
+  labels:
+    entorno: produccion
+    app: frontend
+spec:
+  selector:
+    matchLabels:
+      app: external-frontend
+  template:
+    metadata:
+      labels:
+        app: external-frontend
+    spec:
+      containers:
+      - name: external-frontend
+        image: devsendit/sendit-prod:external_frontend
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4200
+      imagePullSecrets:
+      - name: hub-sendit

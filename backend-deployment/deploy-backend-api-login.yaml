@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: login-deployment
+  labels:
+    entorno: produccion
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: login-backend
+  template:
+    metadata:
+      labels:
+        app: login-backend
+    spec:
+      containers:
+      - name: login-backend
+        image: devsendit/sendit-prod:api_backend_login
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4300
+      imagePullSecrets:
+      - name: hub-sendit

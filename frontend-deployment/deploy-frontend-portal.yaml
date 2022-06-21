@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-deployment
+  labels:
+    entorno: produccion
+    app: frontend
+spec:
+  selector:
+    matchLabels:
+      app: portal-frontend
+  template:
+    metadata:
+      labels:
+        app: portal-frontend
+    spec:
+      containers:
+      - name: portal-frontend
+        image: devsendit/sendit-prod:portal_frontend
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4100
+      imagePullSecrets:
+      - name: hub-sendit

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cliente-deployment
+  labels:
+    entorno: produccion
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: cliente-backend
+  template:
+    metadata:
+      labels:
+        app: cliente-backend
+    spec:
+      containers:
+      - name: cliente-backend
+        image: devsendit/sendit-prod:api_backend_cliente
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        ports:
+        - containerPort: 4000
+      imagePullSecrets:
+      - name: hub-sendit
