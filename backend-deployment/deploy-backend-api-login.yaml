@@ -15,13 +15,24 @@ spec:
         app: login-backend
     spec:
       containers:
-      - name: login-backend
-        image: devsendit/sendit-prod:api_backend_login
-        # resources:
-        #   limits:
-        #     memory: "128Mi"
-        #     cpu: "500m"
-        ports:
-        - containerPort: 4300
+        - name: login-backend
+          image: devsendit/sendit-prod:api_backend_login
+          # resources:
+          #   limits:
+          #     memory: "128Mi"
+          #     cpu: "500m"
+          env:
+            - name: APP_PORT
+              value: "4300"
+          ports:
+            - containerPort: 4300
+          volumeMounts:
+            - name: login-config
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: login-config
+          secret:
+            secretName: backend-secret
       imagePullSecrets:
-      - name: hub-sendit
+        - name: hub-sendit

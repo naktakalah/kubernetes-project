@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: legacy-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4000
+      targetPort: 4000
+  selector: # Debe coincidir con el tag de los pods
+      app: legacy-backend

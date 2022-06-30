@@ -21,7 +21,18 @@ spec:
         #   limits:
         #     memory: "128Mi"
         #     cpu: "500m"
+        env:
+          - name: APP_PORT
+            value: "4000"
         ports:
         - containerPort: 4000
+          volumeMounts:
+            - name: cliente-config
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: cliente-config
+          secret:
+            secretName: backend-secret
       imagePullSecrets:
       - name: hub-sendit

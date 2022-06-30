@@ -21,7 +21,18 @@ spec:
         #   limits:
         #     memory: "128Mi"
         #     cpu: "500m"
+        env:
+          - name: APP_PORT
+            value: "4400"
         ports:
         - containerPort: 4400
+          volumeMounts:
+            - name: email-config
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: email-config
+          secret:
+            secretName: backend-secret
       imagePullSecrets:
       - name: hub-sendit

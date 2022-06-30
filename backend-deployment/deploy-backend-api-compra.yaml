@@ -21,7 +21,18 @@ spec:
         #   limits:
         #     memory: "128Mi"
         #     cpu: "500m"
+        env:
+          - name: APP_PORT
+            value: "4700"
         ports:
         - containerPort: 4700
+          volumeMounts:
+            - name: compra-config
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: compra-config
+          secret:
+            secretName: backend-secret
       imagePullSecrets:
       - name: hub-sendit

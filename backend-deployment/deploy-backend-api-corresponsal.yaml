@@ -21,7 +21,18 @@ spec:
         #   limits:
         #     memory: "128Mi"
         #     cpu: "500m"
+        env:
+          - name: APP_PORT
+            value: "4600"
         ports:
         - containerPort: 4600
+          volumeMounts:
+            - name: corresponsal-config
+              mountPath: /app/.env
+              subPath: .env
+      volumes:
+        - name: corresponsal-config
+          secret:
+            secretName: backend-secret
       imagePullSecrets:
       - name: hub-sendit
