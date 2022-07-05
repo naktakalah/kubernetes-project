@@ -24,15 +24,17 @@ spec:
         env:
           - name: APP_PORT
             value: "4800"
+          - name: NAME_APP
+            value: "legacyApi"
         ports:
         - containerPort: 4800
-          volumeMounts:
-            - name: legacy-config
-              mountPath: /app/.env
-              subPath: .env
+        volumeMounts:
+          - name: legacy-config
+            mountPath: /app/.env
+            subPath: .env
       volumes:
         - name: legacy-config
           secret:
-            secretName: backend-secret
+            secretName: backend-secret-global
       imagePullSecrets:
       - name: hub-sendit

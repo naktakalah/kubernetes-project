@@ -24,15 +24,17 @@ spec:
         env:
           - name: APP_PORT
             value: "4400"
+          - name: NAME_APP
+            value: "emailApi"
         ports:
         - containerPort: 4400
-          volumeMounts:
-            - name: email-config
-              mountPath: /app/.env
-              subPath: .env
+        volumeMounts:
+          - name: email-config
+            mountPath: /app/.env
+            subPath: .env
       volumes:
         - name: email-config
           secret:
-            secretName: backend-secret
+            secretName: backend-secret-global
       imagePullSecrets:
       - name: hub-sendit

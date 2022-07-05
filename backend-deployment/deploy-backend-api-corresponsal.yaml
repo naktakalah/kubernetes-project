@@ -24,15 +24,17 @@ spec:
         env:
           - name: APP_PORT
             value: "4600"
+          - name: NAME_APP
+            value: "corresponsalApi"
         ports:
         - containerPort: 4600
-          volumeMounts:
-            - name: corresponsal-config
-              mountPath: /app/.env
-              subPath: .env
+        volumeMounts:
+          - name: corresponsal-config
+            mountPath: /app/.env
+            subPath: .env
       volumes:
         - name: corresponsal-config
           secret:
-            secretName: backend-secret
+            secretName: backend-secret-global
       imagePullSecrets:
       - name: hub-sendit

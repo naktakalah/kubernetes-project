@@ -24,15 +24,17 @@ spec:
         env:
           - name: APP_PORT
             value: "4000"
+          - name: NAME_APP
+            value: "clienteApi"
         ports:
         - containerPort: 4000
-          volumeMounts:
-            - name: cliente-config
-              mountPath: /app/.env
-              subPath: .env
+        volumeMounts:
+          - name: cliente-config
+            mountPath: /app/.env
+            subPath: .env
       volumes:
         - name: cliente-config
           secret:
-            secretName: backend-secret
+            secretName: backend-secret-global
       imagePullSecrets:
       - name: hub-sendit

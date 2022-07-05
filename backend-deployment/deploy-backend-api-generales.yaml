@@ -24,15 +24,17 @@ spec:
         env:
           - name: APP_PORT
             value: "4500"
+          - name: NAME_APP
+            value: "generalesApi"
         ports:
         - containerPort: 4500
-          volumeMounts:
-            - name: generales-config
-              mountPath: /app/.env
-              subPath: .env
+        volumeMounts:
+          - name: generales-config
+            mountPath: /app/.env
+            subPath: .env
       volumes:
         - name: generales-config
           secret:
-            secretName: backend-secret
+            secretName: backend-secret-global
       imagePullSecrets:
       - name: hub-sendit

@@ -24,6 +24,8 @@ spec:
           env:
             - name: APP_PORT
               value: "4300"
+            - name: NAME_APP
+              value: "loginApi"
           ports:
             - containerPort: 4300
           volumeMounts:
@@ -33,6 +35,6 @@ spec:
       volumes:
         - name: login-config
           secret:
-            secretName: backend-secret
+            secretName: backend-secret-global
       imagePullSecrets:
         - name: hub-sendit

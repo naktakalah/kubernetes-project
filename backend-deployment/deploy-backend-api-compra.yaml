@@ -24,15 +24,19 @@ spec:
         env:
           - name: APP_PORT
             value: "4700"
+          - name: NAME_APP
+            value: "compraApi"
+          - name: APP_CONN
+            value: "generales-service:4500"
         ports:
         - containerPort: 4700
-          volumeMounts:
-            - name: compra-config
-              mountPath: /app/.env
-              subPath: .env
+        volumeMounts:
+          - name: compra-config
+            mountPath: /app/.env
+            subPath: .env
       volumes:
         - name: compra-config
           secret:
-            secretName: backend-secret
+            secretName: backend-secret-connect
       imagePullSecrets:
       - name: hub-sendit
