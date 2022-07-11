@@ -1,0 +1,16 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: caja-ingress-route
+spec:
+  entryPoints:
+    - web
+    - websecure   
+  routes:
+  - kind: Rule
+    match: Host(`caja.sendit.com`)
+    services:
+    # The service name and port must match the Service
+    # specified in the deploy file
+    - name: caja-service
+      port: 5000

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: caja-deployment
+  labels:
+    entorno: produccion
+    app: backend
+spec:
+  selector:
+    matchLabels:
+      app: caja-backend
+  template:
+    metadata:
+      labels:
+        app: caja-backend
+    spec:
+      containers:
+      - name: caja-backend
+        image: devsendit/sendit-prod:api_backend_caja
+        # resources:
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"
+        env:
+          - name: APP_PORT
+            value: "5000"
+          - name: NAME_APP
+            value: "cajaApi"
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - name: caja-config
+            mountPath: /app/.env
+            subPath: .env
+      volumes:
+        - name: caja-config
+          secret:
+            secretName: backend-secret-global
+      imagePullSecrets:
+      - name: hub-sendit
