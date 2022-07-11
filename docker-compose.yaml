@@ -1,0 +1,160 @@
+version: "3.9"
+
+# Definicion de api corresponsal
+services:
+  sendit_backend_corresponsal:
+    image: devsendit/sendit-prod:api_backend_corresponsal
+    build: 
+      context: ./apis/sendit_apis/corresponsal_api # Ubicacion de dockerfile
+    ports:
+      - "4600:4600" # Puerto expuesto
+    labels:   
+      - "traefik.http.routers.sendit_backend_corresponsal.rule=Host(`corresponsal.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+
+# Definicion de api compra
+  sendit_backend_compra:
+    image: devsendit/sendit-prod:api_backend_compra
+    build: 
+      context: ./apis/sendit_apis/compra_api # Ubicacion de dockerfile
+    ports:
+      - "4700:4700" # Puerto expuesto
+    labels:   
+      - "traefik.http.routers.sendit_backend_compra.rule=Host(`compra.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+
+# Definicion de api legacy
+  sendit_backend_legacy:
+    image: devsendit/sendit-prod:api_backend_legacy
+    build: 
+      context: ./apis/sendit_apis/legacy_api # Ubicacion de dockerfile
+    ports:
+      - "4800:4800" # Puerto expuesto
+    labels:   
+      - "traefik.http.routers.sendit_backend_legacy.rule=Host(`legacy.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+
+# Definicion de api cliente
+  sendit_backend_cliente:
+    image: devsendit/sendit-prod:api_backend_cliente
+    build: 
+      context: ./apis/sendit_apis/cliente_api # Ubicacion de dockerfile
+    ports:
+      - "4000:4000" # Puerto expuesto
+    labels:   
+      - "traefik.http.routers.sendit_backend_cliente.rule=Host(`cliente.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+
+# Definicion de api login
+  sendit_backend_login:
+    image: devsendit/sendit-prod:api_backend_login
+    build: 
+      context: ./apis/sendit_apis/login_api # Ubicacion de dockerfile
+    ports:
+      - "4300:4300" # Puerto expuesto
+    labels:   
+      - "traefik.http.routers.sendit_backend_login.rule=Host(`login.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+
+# Definicion de api generales
+  sendit_backend_generales:
+    image: devsendit/sendit-prod:api_backend_generales
+    build: 
+      context: ./apis/sendit_apis/generales_api # Ubicacion de dockerfile
+    ports:
+      - "4500:4500" # Puerto expuesto
+    labels:   
+      - "traefik.http.routers.sendit_backend_generales.rule=Host(`generales.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+
+# Defincion de api mail
+  sendit_backend_email:
+    image: devsendit/sendit-prod:api_backend_email
+    build: 
+      context: ./apis/sendit_apis/email_api # Ubicacion de dockerfile
+    ports:
+      - "4400:4400" # Puerto expuesto
+    labels:
+      - "traefik.http.routers.sendit_backend_email.rule=Host(`email.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+
+# Definicion de api caja
+  sendit_backend_caja:
+    image: devsendit/sendit-prod:api_backend_caja
+    build: 
+      context: ./apis/sendit_apis/caja_api # Ubicacion de dockerfile
+    ports:
+      - "5000:5000" # Puerto expuesto
+    labels:   
+      - "traefik.http.routers.sendit_backend_caja.rule=Host(`caja.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    networks:
+      - network_test
+  
+# Definicion de frontend external
+  external_frontend:
+    image: devsendit/sendit-prod:external_frontend
+    build: 
+      context: ./frontend/sendit_frontend/external # Ubicacion de dockerfile
+    ports:
+      - "4200:4200" # Puerto expuesto
+    labels:
+      - "traefik.http.routers.external_frontend.rule=Host(`external.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    depends_on: # El frontend no hace nada si las apis no estan arriba
+      - sendit_backend_login 
+    networks:
+      - network_test
+
+# Definicion de frontend portal
+  portal_frontend:
+    image: devsendit/sendit-prod:portal_frontend
+    build: 
+      context: ./frontend/sendit_frontend/portal # Ubicacion de dockerfile
+    ports:
+      - "4100:4100" # Puerto expuesto
+    labels:
+      - "traefik.http.routers.portal_frontend.rule=Host(`portal.sendit.com`)" # Label traefik apuntando a la url para redireccion
+    depends_on: # El frontend no hace nada si las apis no estan arriba
+      - sendit_backend_login 
+    networks:
+      - network_test
+
+# Defincion de servicio traefik
+  reverse-proxy: # Servicio de proxy reverso
+    # The official v2 Traefik docker image
+    image: traefik:v2.6
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik.toml:/etc/traefik/traefik.toml" # Este archvivo es de configuracion para traefik
+    networks:
+      network_test:
+        ipv4_address: "172.16.10.50"
+
+
+# Red customizada para mantener un rango fijo      
+networks:
+  network_test:
+    name: network_test
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.10.0/24"
+          gateway: "172.16.10.254"
+  default:
+    driver: bridge
+
+# networks:
+#   network_test:
+#     driver: bridge
